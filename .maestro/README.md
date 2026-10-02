@@ -64,6 +64,25 @@ variables, never from YAML, JS or fixtures. See `../.env.example`.
   carry no suite tags; call them with `runFlow: {file: ..., label: ...}`.
 - Tag `cross-platform` only after the same journey has passed on Android and iOS.
 
+## Components
+
+| Component                                    | Responsibility                                          | Inputs                                |
+| -------------------------------------------- | ------------------------------------------------------- | ------------------------------------- |
+| `components/app/launch_clean.yaml`           | `clearState` launch, skip onboarding, land on home      | —                                     |
+| `components/app/dismiss_tips.yaml`           | Dismiss any visible first-run tip/prompt (idempotent)   | —                                     |
+| `components/navigation/open_article_from_search.yaml` | Search, open the result, wait for article content | `SEARCH_QUERY`, `ARTICLE_DESCRIPTION` |
+| `components/assertions/assert_article_saved.yaml` | Verify the article is listed in Saved              | `ARTICLE_TITLE`, `ARTICLE_DESCRIPTION` |
+
+No permissions component exists: no permission dialog was observed in the
+covered journeys. Journey test data lives in each flow's `env:` header; no
+JavaScript helper or fixture file is needed because the sample creates no
+uniquely named data (saved articles are local and reset by `clearState`).
+
+`open_article_from_search` waits up to 10 s / 20 s for first-run tips with
+`optional: true`. On a clean install (every journey uses `launch_clean`) the
+tips always appear, so the waits end early; reuse within the same app session
+pays the full timeout.
+
 ## Notes
 
 - `platform.*.disableAnimations` in `config.yaml` is a Maestro Cloud-only

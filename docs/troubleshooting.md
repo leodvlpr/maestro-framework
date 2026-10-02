@@ -15,6 +15,11 @@ connected to the same simulator: every MCP call (even a screenshot) failed with
 `Device became unreachable during setPermissions`. Reconnect the MCP server
 (`/mcp` in Claude Code) before using MCP again.
 
+The reverse also happens: with an MCP session connected, a CLI run once stopped
+mid-flow without an error (its log ends during `inputText`) while two XCTest
+runner processes were alive. **Use one tool per device at a time** — either the
+CLI or MCP — and reconnect MCP after switching back from the CLI.
+
 ## A visible element is reported as not visible (iOS)
 
 First-run tips and prompts hide the content behind them from the accessibility

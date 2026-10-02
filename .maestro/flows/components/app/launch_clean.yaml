@@ -1,0 +1,13 @@
+# Launch the app from a clean state and land on the Explore home screen.
+# clearState is verified to reset onboarding, saved articles and history (sut-contract.md).
+# Inputs: none. Postcondition: home screen with the tab bar visible.
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+- assertVisible: "Skip"
+- tapOn: "Skip"
+- extendedWaitUntil:
+    visible:
+      id: tabbar-explore
+    timeout: 10000

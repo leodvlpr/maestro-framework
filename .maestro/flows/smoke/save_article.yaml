@@ -1,0 +1,34 @@
+# Precondition: the SUT is installed on the selected target; network access.
+# A reader finds an article, saves it, and sees it in Saved.
+# Data: a long-lived live Wikipedia article. Saved data is local to the app and
+# reset by clearState in launch_clean (no cleanup step needed).
+appId: ${APP_ID}
+name: Save an article and find it in Saved
+tags:
+  - smoke
+  - critical
+  - ios
+env:
+  SEARCH_QUERY: Apollo 11
+  ARTICLE_TITLE: Apollo 11
+  ARTICLE_DESCRIPTION: 'First crewed Moon landing \(1969\)'
+---
+- runFlow:
+    file: ../components/app/launch_clean.yaml
+    label: Launch from a clean state
+- runFlow:
+    file: ../components/navigation/open_article_from_search.yaml
+    label: Search and open the article
+    env:
+      SEARCH_QUERY: ${SEARCH_QUERY}
+      ARTICLE_DESCRIPTION: ${ARTICLE_DESCRIPTION}
+- tapOn: "Save for later"
+- assertVisible: "Saved. Activate to unsave."
+- tapOn:
+    id: BackButton
+- runFlow:
+    file: ../components/assertions/assert_article_saved.yaml
+    label: Verify the article is in Saved
+    env:
+      ARTICLE_TITLE: ${ARTICLE_TITLE}
+      ARTICLE_DESCRIPTION: ${ARTICLE_DESCRIPTION}

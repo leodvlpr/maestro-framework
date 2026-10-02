@@ -5,7 +5,7 @@ A maintainable mobile UI automation framework built with
 Wikipedia sample app from `maestro download-samples` and is structured so a
 real application can replace that sample later without redesigning the suite.
 
-**Status:** Phase 2 of 8 — workspace scaffolded; one smoke flow passing on iOS.
+**Status:** Phase 3 of 8 — reusable components in place; two smoke flows passing on iOS.
 Android is not verified yet. The phased plan is in
 [`docs/tasks/step-01-setup.md`](docs/tasks/step-01-setup.md).
 
