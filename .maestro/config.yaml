@@ -1,0 +1,15 @@
+# Maestro workspace configuration.
+# Discovery: only executable suites are matched; reusable components and
+# support helpers are excluded explicitly. Globs are relative to .maestro/.
+# No appId here: every executable flow declares `appId: ${APP_ID}`.
+flows:
+  - "flows/smoke/**"
+  - "flows/regression/**"
+  - "flows/platform/**"
+  - "!flows/components/**"
+  - "!flows/support/**"
+
+# Default output location. Maestro resolves this against the current working
+# directory (not .maestro/), so run commands from the repository root.
+# Override per run with --test-output-dir artifacts/maestro/<run-id>.
+testOutputDir: artifacts/maestro/default

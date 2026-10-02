@@ -1,0 +1,13 @@
+# Precondition: the SUT is installed on the selected target (docs/sut-contract.md).
+# Verifies a clean launch reaches the first onboarding page.
+appId: ${APP_ID}
+name: Launch app from a clean state
+tags:
+  - smoke
+  - critical
+  - ios
+---
+- launchApp:
+    clearState: true
+- assertVisible: "The free encyclopedia"
+- assertVisible: "Skip"
