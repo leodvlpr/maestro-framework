@@ -1,0 +1,20 @@
+# Maestro run output (created at runtime)
+artifacts/
+
+# Local sample downloads / scratch data
+work/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# App binaries — never committed
+*.apk
+*.aab
+*.ipa
+*.app/
+*.app.zip
+
+# OS / editor
+.DS_Store
