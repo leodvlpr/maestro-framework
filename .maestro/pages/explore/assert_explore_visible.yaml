@@ -1,0 +1,14 @@
+# Verify the Explore screen is shown with the Explore tab selected.
+appId: ${MAESTRO_APP_ID}
+---
+- runScript: ../../selectors/pages/explore.js
+- runScript: ../../selectors/components/tab_bar.js
+# The tab button (parent) carries `selected`; its icon child carries the id.
+- extendedWaitUntil:
+    visible:
+      selected: true
+      containsChild:
+        id: ${output.tabBar.id.explore}
+    timeout: 10000
+- assertVisible:
+    text: ${output.explore.text.searchField}

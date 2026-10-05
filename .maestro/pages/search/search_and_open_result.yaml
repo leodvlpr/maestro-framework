@@ -1,0 +1,23 @@
+# Search for a term and open a result.
+# Precondition: a screen showing the "Search Wikipedia" field (Explore or Article).
+# Inputs:
+#   QUERY               text typed into the search field
+#   RESULT_DESCRIPTION  result's short description (regex). Used to pick the result
+#                       because the filled search field also matches the title text.
+# Postcondition: the article screen starts loading (see article/wait_until_loaded.yaml).
+appId: ${MAESTRO_APP_ID}
+---
+- runScript: ../../selectors/pages/search.js
+- tapOn:
+    text: ${output.search.text.searchField}
+- inputText: ${QUERY}
+# The "Add languages" popover can appear with the first results and hides them.
+- runFlow:
+    file: ../../components/tips/dismiss_popover.yaml
+    label: Dismiss first-search tip if shown
+- extendedWaitUntil:
+    visible:
+      text: ${RESULT_DESCRIPTION}
+    timeout: 15000
+- tapOn:
+    text: ${RESULT_DESCRIPTION}

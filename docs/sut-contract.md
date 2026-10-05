@@ -1,5 +1,9 @@
 # SUT contract — Wikipedia sample app (Maestro samples)
 
+Selectors listed here are implemented in `.maestro/selectors/pages/*.js` and
+`.maestro/selectors/components/*.js` (grouped as `id` / `text`; see
+`docs/selector-policy.md`).
+
 This contract is the adapter boundary between the framework and the system
 under test (SUT). Everything below was observed on a real target unless it is
 explicitly marked **not verified** or **not available**. Flows must not rely on
@@ -124,7 +128,7 @@ that content fail.
 | Trigger                       | Text                                   | Dismiss with                        |
 | ----------------------------- | -------------------------------------- | ----------------------------------- |
 | First search results load     | "Add languages"                        | `tapOn: {id: PopoverDismissRegion}` |
-| First article opened          | "Tap to go back" → "Open in new tab"   | `tapOn: "Got it"` (repeat while visible; they chain) |
+| First article opened          | "Tap to go back" → "Open in new tab" → sometimes "Tabs overview" | `tapOn: "Got it"` (repeat while visible; chain length varies) |
 | After saving an article       | "Add "Apollo 11" to a reading list?" banner | Disappears by itself (≈ a few seconds); wait for `notVisible` |
 | First visit to Saved tab      | "Sync your saved articles?" (`id: reading-list-login`) | `tapOn: "Close"`         |
 | Sample flows also handle      | "Explore your Wikipedia Year in Review", "You have been logged out" | Not observed on this build/date |
@@ -157,7 +161,7 @@ that content fail.
 
 | Sample capability / locator        | Real-app equivalent to define                              |
 | ---------------------------------- | ---------------------------------------------------------- |
-| `APP_ID` `org.wikimedia.wikipedia` | Real iOS bundle ID / Android package per environment       |
+| `MAESTRO_APP_ID` `org.wikimedia.wikipedia` | Real iOS bundle ID / Android package per environment       |
 | Onboarding (`Skip`/`Get started`)  | Real first-launch flow (onboarding, consent, login)        |
 | First-run tips (Interruptions)     | Real app's coach marks, rating prompts, permission dialogs |
 | Search → open article              | Main search / catalogue → detail journey                   |

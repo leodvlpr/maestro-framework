@@ -1,0 +1,8 @@
+# Save the open article. Precondition: article loaded (wait_until_loaded.yaml).
+appId: ${MAESTRO_APP_ID}
+---
+- runScript: ../../selectors/pages/article.js
+- tapOn:
+    text: ${output.article.text.saveButton}
+- assertVisible:
+    text: ${output.article.text.savedButton}

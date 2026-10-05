@@ -1,0 +1,15 @@
+# A new user reads every onboarding page and reaches Explore.
+# Precondition: app installed on the selected target.
+appId: ${MAESTRO_APP_ID}
+name: Complete onboarding to Explore
+tags:
+  - regression
+  - onboarding
+  - ios
+---
+- runFlow:
+    file: ../../common/launch_clean.yaml
+    label: Launch with a clean state
+- runFlow:
+    file: ../../pages/onboarding/complete_onboarding.yaml
+    label: Walk through all onboarding pages

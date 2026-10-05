@@ -1,0 +1,9 @@
+# Open a tab from the bottom tab bar. The destination page action verifies
+# the screen (some tabs open a first-run prompt that hides the tab bar).
+# Inputs:
+#   TAB  one of: explore, places, saved, history, search
+appId: ${MAESTRO_APP_ID}
+---
+- runScript: ../../selectors/components/tab_bar.js
+- tapOn:
+    id: ${output.tabBar.id[TAB]}

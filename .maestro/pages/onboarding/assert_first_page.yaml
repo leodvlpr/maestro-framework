@@ -1,0 +1,8 @@
+# Verify the first onboarding page is shown.
+appId: ${MAESTRO_APP_ID}
+---
+- runScript: ../../selectors/pages/onboarding.js
+- assertVisible:
+    text: ${output.onboarding.text.page1Title}
+- assertVisible:
+    text: ${output.onboarding.text.skipButton}

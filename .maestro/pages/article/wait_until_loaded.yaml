@@ -1,0 +1,20 @@
+# Wait for an article to render and dismiss its first-run tips.
+# Inputs:
+#   TITLE        article title (regex)
+#   DESCRIPTION  article short description (regex)
+# Postcondition: article content and toolbar are accessible.
+appId: ${MAESTRO_APP_ID}
+---
+- runScript: ../../selectors/pages/article.js
+- runFlow:
+    file: ../../components/tips/dismiss_got_it_tips.yaml
+    label: Dismiss first-article tips if shown
+- extendedWaitUntil:
+    visible:
+      text: ${DESCRIPTION}
+    timeout: 20000
+    label: Wait for article content
+- assertVisible:
+    text: ${TITLE}
+- assertVisible:
+    text: ${output.article.text.saveButton}

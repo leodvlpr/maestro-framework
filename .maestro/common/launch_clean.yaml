@@ -1,0 +1,7 @@
+# Launch the app with a clean state (fresh-install behaviour).
+# clearState is verified to reset onboarding, saved articles and history
+# (docs/sut-contract.md). Postcondition: first onboarding page.
+appId: ${MAESTRO_APP_ID}
+---
+- launchApp:
+    clearState: true

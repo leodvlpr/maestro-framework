@@ -1,0 +1,12 @@
+# Skip onboarding from its first page. Postcondition: Explore screen.
+appId: ${MAESTRO_APP_ID}
+---
+- runScript: ../../selectors/pages/onboarding.js
+- runFlow:
+    file: assert_first_page.yaml
+    label: Onboarding is on its first page
+- tapOn:
+    text: ${output.onboarding.text.skipButton}
+- runFlow:
+    file: ../explore/assert_explore_visible.yaml
+    label: Explore screen is shown

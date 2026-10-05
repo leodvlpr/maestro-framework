@@ -5,7 +5,7 @@ A maintainable mobile UI automation framework built with
 Wikipedia sample app from `maestro download-samples` and is structured so a
 real application can replace that sample later without redesigning the suite.
 
-**Status:** Phase 3 of 8 — reusable components in place; two smoke flows passing on iOS.
+**Status:** POM restructure — 5 tests in 4 domains (3 smoke, 2 regression) on iOS.
 Android is not verified yet. The phased plan is in
 [`docs/tasks/step-01-setup.md`](docs/tasks/step-01-setup.md).
 
@@ -26,38 +26,40 @@ maestro download-samples -o work/maestro-samples
 unzip -q -o work/maestro-samples/samples/wikipedia.zip -d work/maestro-samples/ios -x '__MACOSX/*'
 xcrun simctl install <simulator-udid> work/maestro-samples/ios/Wikipedia.app
 
-# 2. Run the smoke suite from the repository root
-maestro --device <simulator-udid> test \
-  -e APP_ID=org.wikimedia.wikipedia \
-  -e TARGET_PLATFORM=ios \
-  -e RUN_ENV=sample \
-  -e RUN_ID=local-001 \
-  --test-output-dir artifacts/maestro/local-001 \
-  --include-tags=smoke \
-  .maestro
+# 2. Configure your target (once) and run the smoke suite
+cp .env.example .env        # set MAESTRO_APP_ID and DEVICE_ID
+scripts/run_tests.sh --include-tags=smoke
 ```
 
-Results, screenshots and logs land in `artifacts/maestro/local-001/` (ignored).
+Results, screenshots, logs and a JUnit report land in `artifacts/maestro/<run-id>/` (ignored).
 
 ## Architecture
 
 ```text
 .
-├── .maestro/            # Maestro workspace: config, flows, components, scripts, data
-├── docs/                # SUT contract, strategy, policies, CI, troubleshooting
-├── artifacts/           # Run output (ignored, created at runtime)
-└── work/                # Sample downloads and scratch data (ignored)
+├── .maestro/
+│   ├── selectors/           # ALL identifiers, grouped by type (id / text)
+│   ├── tests/<domain>/      # tests by business domain (the only discovered flows)
+│   ├── pages/<screen>/      # Page Objects: actions and assertions per screen
+│   ├── components/<name>/   # actions of shared UI components (tab bar, first-run tips)
+│   ├── common/              # app lifecycle (launch_clean)
+│   └── data/                # test data
+├── scripts/run_tests.sh     # loads .env and runs Maestro with per-run output
+├── docs/                    # SUT contract, strategy, policies, CI, troubleshooting
+├── artifacts/               # run output (ignored, created at runtime)
+└── work/                    # sample downloads and scratch data (ignored)
 ```
 
-All executable flows use `appId: ${APP_ID}`; the app identifier is always
-supplied at runtime. See [`.maestro/README.md`](.maestro/README.md) for flow
-conventions and variables.
+All tests use `appId: ${MAESTRO_APP_ID}`; the app identifier always comes from
+`.env` or CI. Every element access declares its type (`id:` / `text:`) and
+takes its value from `.maestro/selectors/`. See [`.maestro/README.md`](.maestro/README.md)
+for conventions, how to add selectors/pages/components/tests, and variables.
 
 ## Documentation
 
 - [SUT contract](docs/sut-contract.md) — verified app IDs, journeys, locators, reset behavior
-- [Test strategy](docs/test-strategy.md)
-- [Selector policy](docs/selector-policy.md)
+- [Test strategy](docs/test-strategy.md) — suites, test inventory, isolation, flake policy
+- [Selector policy](docs/selector-policy.md) — where selectors live, explicit types, preference order
 - [CI/CD](docs/ci-cd.md)
 - [Troubleshooting](docs/troubleshooting.md)
 - [Real SUT migration](docs/real-sut-migration.md)

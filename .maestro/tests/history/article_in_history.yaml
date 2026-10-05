@@ -1,0 +1,42 @@
+# An article a reader opened appears in History under "Today".
+# Precondition: app installed on the selected target; network access.
+appId: ${MAESTRO_APP_ID}
+name: Opened article is listed in History
+tags:
+  - regression
+  - history
+  - ios
+---
+- runScript: ../../data/articles.js
+- runFlow:
+    file: ../../common/launch_clean.yaml
+    label: Launch with a clean state
+- runFlow:
+    file: ../../pages/onboarding/skip_onboarding.yaml
+    label: Skip onboarding
+- runFlow:
+    file: ../../pages/search/search_and_open_result.yaml
+    label: Search and open the article
+    env:
+      QUERY: ${output.articles.apollo11.query}
+      RESULT_DESCRIPTION: ${output.articles.apollo11.description}
+- runFlow:
+    file: ../../pages/article/wait_until_loaded.yaml
+    label: Article is loaded
+    env:
+      TITLE: ${output.articles.apollo11.title}
+      DESCRIPTION: ${output.articles.apollo11.description}
+- runFlow:
+    file: ../../pages/article/go_back.yaml
+    label: Leave the article
+- runFlow:
+    file: ../../components/tab_bar/go_to_tab.yaml
+    label: Open the History tab
+    env:
+      TAB: history
+- runFlow:
+    file: ../../pages/history/assert_article_listed.yaml
+    label: Article is listed in History
+    env:
+      TITLE: ${output.articles.apollo11.title}
+      DESCRIPTION: ${output.articles.apollo11.description}

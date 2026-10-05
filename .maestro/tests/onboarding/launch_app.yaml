@@ -1,0 +1,16 @@
+# A fresh install opens on the first onboarding page.
+# Precondition: app installed on the selected target (docs/sut-contract.md).
+appId: ${MAESTRO_APP_ID}
+name: Fresh launch shows onboarding
+tags:
+  - smoke
+  - critical
+  - onboarding
+  - ios
+---
+- runFlow:
+    file: ../../common/launch_clean.yaml
+    label: Launch with a clean state
+- runFlow:
+    file: ../../pages/onboarding/assert_first_page.yaml
+    label: First onboarding page is shown

@@ -1,0 +1,25 @@
+# Walk through all onboarding pages and finish with "Get started".
+# Postcondition: Explore screen.
+appId: ${MAESTRO_APP_ID}
+---
+- runScript: ../../selectors/pages/onboarding.js
+- runFlow:
+    file: assert_first_page.yaml
+    label: Onboarding is on its first page
+- tapOn:
+    text: ${output.onboarding.text.nextButton}
+- assertVisible:
+    text: ${output.onboarding.text.page2Title}
+- tapOn:
+    text: ${output.onboarding.text.nextButton}
+- assertVisible:
+    text: ${output.onboarding.text.page3Title}
+- tapOn:
+    text: ${output.onboarding.text.nextButton}
+- assertVisible:
+    text: ${output.onboarding.text.page4Title}
+- tapOn:
+    text: ${output.onboarding.text.getStartedButton}
+- runFlow:
+    file: ../explore/assert_explore_visible.yaml
+    label: Explore screen is shown

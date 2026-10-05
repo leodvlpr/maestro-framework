@@ -1,0 +1,47 @@
+# A reader saves an article and finds it in Saved.
+# Precondition: app installed on the selected target; network access.
+# Saved data is local to the app and reset by launch_clean (no cleanup needed).
+appId: ${MAESTRO_APP_ID}
+name: Save an article and find it in Saved
+tags:
+  - smoke
+  - critical
+  - reading_list
+  - ios
+---
+- runScript: ../../data/articles.js
+- runFlow:
+    file: ../../common/launch_clean.yaml
+    label: Launch with a clean state
+- runFlow:
+    file: ../../pages/onboarding/skip_onboarding.yaml
+    label: Skip onboarding
+- runFlow:
+    file: ../../pages/search/search_and_open_result.yaml
+    label: Search and open the article
+    env:
+      QUERY: ${output.articles.apollo11.query}
+      RESULT_DESCRIPTION: ${output.articles.apollo11.description}
+- runFlow:
+    file: ../../pages/article/wait_until_loaded.yaml
+    label: Article is loaded
+    env:
+      TITLE: ${output.articles.apollo11.title}
+      DESCRIPTION: ${output.articles.apollo11.description}
+- runFlow:
+    file: ../../pages/article/save_article.yaml
+    label: Save the article
+- runFlow:
+    file: ../../pages/article/go_back.yaml
+    label: Leave the article
+- runFlow:
+    file: ../../components/tab_bar/go_to_tab.yaml
+    label: Open the Saved tab
+    env:
+      TAB: saved
+- runFlow:
+    file: ../../pages/saved/assert_article_listed.yaml
+    label: Article is listed in Saved
+    env:
+      TITLE: ${output.articles.apollo11.title}
+      DESCRIPTION: ${output.articles.apollo11.description}

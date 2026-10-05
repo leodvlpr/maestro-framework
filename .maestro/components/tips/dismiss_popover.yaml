@@ -1,0 +1,13 @@
+# Dismiss a popover tip (e.g. "Add languages") if one is shown; no-op otherwise.
+# Cost when absent: one lookup (~7 s), which also covers a popover that is still appearing.
+appId: ${MAESTRO_APP_ID}
+---
+- runScript: ../../selectors/components/tips.js
+- runFlow:
+    when:
+      visible:
+        id: ${output.tips.id.popoverDismissRegion}
+    commands:
+      - tapOn:
+          id: ${output.tips.id.popoverDismissRegion}
+    label: Dismiss popover tip if visible

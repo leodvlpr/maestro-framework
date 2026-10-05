@@ -1,0 +1,23 @@
+# Dismiss the chained first-article tips; no-op if none is shown.
+# Observed chains: "Tap to go back" -> "Open in new tab" (-> "Tabs overview"),
+# so the count is not fixed. Precondition: the article is loading.
+appId: ${MAESTRO_APP_ID}
+---
+- runScript: ../../selectors/components/tips.js
+# Content can take well over the default lookup to render; the tips appear with it.
+- extendedWaitUntil:
+    visible:
+      text: ${output.tips.text.gotItButton}
+    timeout: 20000
+    optional: true
+    label: Wait for first-article tips (only after a clean install)
+# Costs one extra lookup (~7 s) after the last tip; required because the chain length varies.
+- repeat:
+    times: 5
+    while:
+      visible:
+        text: ${output.tips.text.gotItButton}
+    commands:
+      - tapOn:
+          text: ${output.tips.text.gotItButton}
+      - waitForAnimationToEnd

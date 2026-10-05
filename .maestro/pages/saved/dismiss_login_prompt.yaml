@@ -1,0 +1,13 @@
+# Close the "Sync your saved articles?" prompt shown on the first visit to Saved.
+# No-op when it is not shown.
+appId: ${MAESTRO_APP_ID}
+---
+- runScript: ../../selectors/pages/saved.js
+- runFlow:
+    when:
+      visible:
+        id: ${output.saved.id.loginPrompt}
+    commands:
+      - tapOn:
+          text: ${output.saved.text.loginPromptCloseButton}
+    label: Close login prompt if visible

@@ -1,0 +1,14 @@
+# Verify an article read today is listed in History.
+# Precondition: History tab open (components/tab_bar/go_to_tab.yaml, TAB=history).
+# Inputs:
+#   TITLE        article title (regex)
+#   DESCRIPTION  article short description (regex)
+appId: ${MAESTRO_APP_ID}
+---
+- runScript: ../../selectors/pages/history.js
+- assertVisible:
+    text: ${output.history.text.todaySection}
+- assertVisible:
+    text: ${TITLE}
+- assertVisible:
+    text: ${DESCRIPTION}

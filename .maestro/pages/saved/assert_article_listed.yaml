@@ -1,0 +1,17 @@
+# Verify an article is listed under Saved > All articles.
+# Precondition: Saved tab just opened (components/tab_bar/go_to_tab.yaml, TAB=saved).
+# Inputs:
+#   TITLE        article title (regex)
+#   DESCRIPTION  article short description (regex)
+appId: ${MAESTRO_APP_ID}
+---
+- runScript: ../../selectors/pages/saved.js
+- runFlow:
+    file: dismiss_login_prompt.yaml
+    label: Close first-visit login prompt
+- assertVisible:
+    text: ${output.saved.text.allArticlesTab}
+- assertVisible:
+    text: ${TITLE}
+- assertVisible:
+    text: ${DESCRIPTION}

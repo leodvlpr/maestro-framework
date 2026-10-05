@@ -1,0 +1,6 @@
+# Leave the article and return to the screen it was opened from.
+appId: ${MAESTRO_APP_ID}
+---
+- runScript: ../../selectors/pages/article.js
+- tapOn:
+    id: ${output.article.id.backButton}
